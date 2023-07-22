@@ -27,28 +27,18 @@
 # %%
 import os
 import pandas as pd
-original_df = pd.read_csv('/Users/mitchellsparks/Downloads/finaltrackman.csv')
+original_df = pd.read_csv('/Users/mitchellsparks/Downloads/finaltrackman.csv', sep=';', skiprows=1)
 df = original_df.copy()
 df.head()
 ### MOVE EVERYTHING UNDER THIS LINE INTO THE NEXT CELL BELOW; YOUR FIRST CELL SHOULD JUST BE SETTING UP IMPORTS AND DF_COPY
 
 
 
-
-
-
-# %%
-pd.read_csv('/Users/mitchellsparks/Downloads/finaltrackman.csv', sep=';')
-df = pd.read_csv('/Users/mitchellsparks/Downloads/finaltrackman.csv', skiprows=1)
-# This changed the rows to get the actual ones I needed at the top 
-print(df.columns)
-
-
 # %%
 df = df[[ 'Pitcher', 'TaggedPitchType', 'PitcherThrows', 'SpinRate']]
 #made a smaller df of the certain categories I needed 
 df.columns = df.columns.str.upper() # fixed this to get all of the headings capitalized. did not set the index
-df = df.rename(columns={'TaggedPitchType' : 'TaggedPitchAs', 'PitcherThrows' : 'PitcherHand'}) # renamed a few columns 
+df = df.rename(columns={'TAGGEDPITCHTYPE' : 'TaggedPitchAs', 'PITCHERTHROWS' : 'PitcherHand'}) # renamed a few columns 
 
 df.head()
 
@@ -114,8 +104,6 @@ df = original_df.copy() #imported and created df
 df.head()
 
 # %%
-pd.read_csv('/Users/mitchellsparks/Downloads/finaltrackman.csv', sep=';')
-df = pd.read_csv('/Users/mitchellsparks/Downloads/finaltrackman.csv', skiprows=1)
 # needed tp set up the columns the right way again to get eveything to work
 correlation = df['RelSpeed'].corr(df['SpinRate']) # to find the correlation between the speed and spin rate 
 print(f"Correlation between RelSpeed and SpinRate: {correlation}")
@@ -132,14 +120,8 @@ plt.ylabel('SpinRate')
 plt.show()
 
 # %%
-average_values = (
-    df
-    .groupby('TaggedPitchType')
-    [['RelSpeed', 'SpinRate']]
-    .mean()
-)
-
-print(average_values)
+grouped_df = df.groupby('TaggedPitchType')[['RelSpeed', 'SpinRate']]
+print(grouped_df.mean())
 
 
 # %%
